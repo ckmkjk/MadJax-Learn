@@ -114,6 +114,8 @@ export function init(container, ctx) {
       const sum = selected.reduce((s, i) => s + parseInt(gameArea.querySelectorAll('.number-bubble')[i].dataset.value), 0);
       if (sum === currentRound.target) {
         score++;
+        // Disable submit immediately to prevent double-tap
+        submitBtn.style.pointerEvents = 'none';
         Audio.correct();
         // Pop selected bubbles
         selected.forEach(i => {

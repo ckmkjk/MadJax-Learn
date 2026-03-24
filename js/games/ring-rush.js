@@ -56,6 +56,7 @@ export function init(container, ctx) {
   let maxStreak = 0;
   let timeLeft = GAME_TIME;
   let timer = null;
+  let countdownTimer = null;
   let active = true;
   let superSpeed = false;
   let currentProblem = null;
@@ -82,12 +83,12 @@ export function init(container, ctx) {
   `;
   container.appendChild(gameArea);
 
-  const scoreEl = gameArea.querySelector('#rr-score');
-  const timerEl = gameArea.querySelector('#rr-timer');
-  const streakEl = gameArea.querySelector('#rr-streak');
-  const questionEl = gameArea.querySelector('#rr-question');
-  const answersEl = gameArea.querySelector('#rr-answers');
-  const speedBg = gameArea.querySelector('#rr-speed-bg');
+  let scoreEl = gameArea.querySelector('#rr-score');
+  let timerEl = gameArea.querySelector('#rr-timer');
+  let streakEl = gameArea.querySelector('#rr-streak');
+  let questionEl = gameArea.querySelector('#rr-question');
+  let answersEl = gameArea.querySelector('#rr-answers');
+  let speedBg = gameArea.querySelector('#rr-speed-bg');
 
   function nextProblem() {
     if (!active) return;
@@ -99,10 +100,17 @@ export function init(container, ctx) {
 
     // Build choices
     let choices = [currentProblem.answer, ...currentProblem.decoys.slice(0, NUM_CHOICES - 1)];
-    // Ensure we have enough
-    while (choices.length < NUM_CHOICES) {
+    // Ensure we have enough choices (with iteration cap to prevent infinite loop)
+    let attempts = 0;
+    while (choices.length < NUM_CHOICES && attempts < 50) {
       const d = currentProblem.answer + Math.floor(Math.random() * 10) - 5;
       if (d > 0 && !choices.includes(d)) choices.push(d);
+      attempts++;
+    }
+    // Fallback: fill with sequential numbers if needed
+    for (let f = 1; choices.length < NUM_CHOICES; f++) {
+      const d = currentProblem.answer + f;
+      if (!choices.includes(d)) choices.push(d);
     }
     choices = shuffle(choices);
 
@@ -171,7 +179,7 @@ export function init(container, ctx) {
     clearInterval(timer);
     Audio.levelComplete();
 
-    const maxPossible = Math.max(score, 15); // estimate max ~15 in 60s
+    const maxPossible = Math.max(score, 25); // estimate max ~25 in 60s
     const result = onComplete(score, maxPossible);
 
     gameArea.innerHTML = `
@@ -207,9 +215,32 @@ export function init(container, ctx) {
     score = 0; streak = 0; maxStreak = 0; timeLeft = GAME_TIME;
     active = true; superSpeed = false;
     clearInterval(timer);
-    // Rebuild
-    gameArea.innerHTML = '';
-    init(container, ctx);
+    clearInterval(countdownTimer);
+    // Rebuild HUD
+    gameArea.innerHTML = `
+      <div class="game-hud">
+        <div class="game-hud__left">
+          <div class="game-hud__score" id="rr-score">0</div>
+          <div class="game-hud__streak" id="rr-streak">🔥 0</div>
+        </div>
+        <div class="game-hud__right">
+          <div class="game-hud__timer" id="rr-timer">${GAME_TIME}</div>
+        </div>
+      </div>
+      <div class="super-speed-bg" id="rr-speed-bg"></div>
+      <div class="game-area" id="rr-area">
+        <div class="question-display" id="rr-question"></div>
+        <div class="answer-grid ${NUM_CHOICES <= 3 ? 'answer-grid--cols-3' : 'answer-grid--cols-4'}" id="rr-answers"></div>
+      </div>
+    `;
+    // Re-bind element references
+    scoreEl = gameArea.querySelector('#rr-score');
+    timerEl = gameArea.querySelector('#rr-timer');
+    streakEl = gameArea.querySelector('#rr-streak');
+    questionEl = gameArea.querySelector('#rr-question');
+    answersEl = gameArea.querySelector('#rr-answers');
+    speedBg = gameArea.querySelector('#rr-speed-bg');
+    startCountdown();
   }
 
   // Start countdown then game
@@ -220,13 +251,13 @@ export function init(container, ctx) {
     let count = 3;
     overlay.innerHTML = `<div class="countdown-number">${count}</div>`;
     Audio.countdown();
-    const cd = setInterval(() => {
+    countdownTimer = setInterval(() => {
       count--;
       if (count > 0) {
         overlay.innerHTML = `<div class="countdown-number">${count}</div>`;
         Audio.countdown();
       } else {
-        clearInterval(cd);
+        clearInterval(countdownTimer);
         overlay.innerHTML = `<div class="countdown-number" style="color:var(--green)">GO!</div>`;
         Audio.go();
         setTimeout(() => {
@@ -244,6 +275,7 @@ export function init(container, ctx) {
     cleanup() {
       active = false;
       clearInterval(timer);
+      clearInterval(countdownTimer);
     }
   };
 }
