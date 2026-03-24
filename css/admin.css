@@ -1,0 +1,314 @@
+/* ===== ADMIN DASHBOARD STYLES ===== */
+
+/* Login Screen */
+.admin-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 24px;
+  background: radial-gradient(ellipse at 50% 30%, rgba(45,27,105,0.3), transparent 70%), var(--bg-dark);
+}
+
+.admin-login__icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.admin-login__title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.admin-login__subtitle {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+.admin-pin-display {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.admin-pin-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.2);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.admin-pin-dot.filled {
+  background: var(--gold);
+  border-color: var(--gold-dark);
+}
+
+.admin-numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 240px;
+}
+
+.admin-numpad__key {
+  width: 64px;
+  height: 56px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s, background 0.1s;
+}
+
+.admin-numpad__key:active {
+  transform: scale(0.93);
+  background: rgba(255,255,255,0.15);
+}
+
+.admin-numpad__key--empty {
+  visibility: hidden;
+}
+
+/* Dashboard */
+.admin-dashboard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-dark);
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: rgba(0,0,0,0.3);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.admin-header__title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 20px;
+  background: rgba(0,0,0,0.2);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.admin-tab {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.admin-tab.active {
+  color: var(--text-bright);
+  border-bottom-color: var(--gold);
+}
+
+.admin-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Player Card */
+.admin-player-card {
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.admin-player-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 12px;
+  margin-bottom: 16px;
+}
+
+.admin-player-card__header h3 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.admin-badge {
+  background: rgba(255,215,0,0.15);
+  color: var(--gold);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Stats Grid */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.admin-stat {
+  text-align: center;
+  padding: 10px 4px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+}
+
+.admin-stat__value {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--text-bright);
+}
+
+.admin-stat__label {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* Game rows */
+.admin-games-list {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 12px;
+}
+
+.admin-game-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+.admin-game-row:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.admin-game-row__icon {
+  font-size: 1.1rem;
+  width: 24px;
+  text-align: center;
+}
+
+.admin-game-row__name {
+  font-weight: 700;
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-game-row__level {
+  font-size: 0.7rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.admin-game-row__stars {
+  display: flex;
+  gap: 1px;
+}
+
+.admin-game-row__info {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+/* Buttons */
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+}
+
+.btn-tiny {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255,71,87,0.15);
+  color: var(--coral);
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.btn-tiny:hover {
+  background: rgba(255,71,87,0.3);
+}
+
+/* Settings */
+.admin-settings {
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.admin-setting-group h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.admin-input {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: white;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.admin-input:focus {
+  border-color: var(--gold);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .admin-game-row__info {
+    display: none;
+  }
+}

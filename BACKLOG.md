@@ -5,20 +5,15 @@
 ### High Priority
 - [ ] Await `AudioContext.resume()` in audio.js for reliable first-interaction audio
 - [ ] Add sound on/off toggle and volume control in hub
-- [x] PWA support (manifest.json, service worker) for offline play
-- [x] Firebase Realtime Database sync for cross-device progress
-- [ ] Add `xmlns` attribute to mini avatar and star SVGs for strict compliance
 
 ### Medium Priority
-- [ ] Parent dashboard — view stats, reset progress, manage profiles
 - [ ] Achievements / badge system (e.g., "10 games played", "3-star streak")
-- [ ] Streak tracking across games (daily play streaks)
 - [ ] Animated transitions between hub and games
 - [ ] Loading screen / splash animation on app start
+- [ ] More Pokemon-themed games (Pokemon Catch math game, Type Matchup reading game)
 
 ### Low Priority
-- [ ] More games per zone (expand beyond 2 per zone)
-- [ ] Customizable avatars (colors, accessories)
+- [ ] Customizable trainer avatars (colors, accessories)
 - [ ] Leaderboard between Maddox and Jaxon
 - [ ] Dark mode / theme toggle
 - [ ] Haptic feedback on mobile (Vibration API)
@@ -26,9 +21,19 @@
 
 ## In Progress
 - [ ] Firebase security rules (lock down to `/profiles/maddox` and `/profiles/jaxon` only)
-- [ ] GitHub Pages deployment
 
 ## Completed
+
+### 2026-03-24 (Session 3)
+- [x] Fix Pattern Portal bug — display logic showed wrong sequence for Maddox (hard patterns)
+- [x] Pokemon theme conversion — zones, avatars, colors, icons all Pokemon-themed
+- [x] Jaxon first-grade difficulty bump — math to 20, CVC words, 4-letter words
+- [x] New game: Floor is Lava — math + reading interactive platform game
+- [x] Level progression system — 3 levels per game, unlock with 2+ stars
+- [x] Admin/parent dashboard — PIN-protected (1234), view stats, reset progress
+- [x] New Lava Badge Arena zone for adventure games
+- [x] Updated service worker cache (v2) with new files
+- [x] Added `xmlns` attribute to all SVGs (avatars.js)
 
 ### 2026-03-24 (Session 2)
 - [x] Firebase Realtime Database cloud sync (firebase-config.js, firebase-sync.js, storage.js changes)
@@ -47,3 +52,4 @@
 - [x] Full 3-pass audit: core modules, all games, CSS/HTML
 - [x] Fix 9 bugs (timer leaks, memory leaks, double-tap, null safety, NaN guard, level cap)
 - [x] Project documentation (CLAUDE.md, ERRORS.md, HANDOFFS.md, BACKLOG.md, SKILLS.md)
+- [x] GitHub Pages deployment

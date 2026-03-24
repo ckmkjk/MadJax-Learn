@@ -1,9 +1,12 @@
 /* ===== DESIGN TOKENS ===== */
 :root {
-  /* Core palette — Sonic-inspired but original */
-  --blue: #1B6FF4;
-  --blue-dark: #0A4BBF;
-  --blue-light: #4D91FF;
+  /* Core palette — Pokemon-inspired */
+  --red: #CC2936;
+  --red-dark: #A01D28;
+  --red-light: #E84855;
+  --blue: #3B4CCA;
+  --blue-dark: #2A3699;
+  --blue-light: #5B6AE0;
   --green: #00C853;
   --green-dark: #009624;
   --gold: #FFD700;
@@ -16,6 +19,8 @@
   --teal: #00BCD4;
   --teal-dark: #008BA3;
   --aqua: #26C6DA;
+  --fire: #FF6B35;
+  --electric: #FFD700;
 
   /* Backgrounds */
   --bg-dark: #0D0B1A;
@@ -41,10 +46,12 @@
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
   --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
   --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
-  --shadow-glow-blue: 0 0 30px rgba(27,111,244,0.4);
+  --shadow-glow-red: 0 0 30px rgba(204,41,54,0.4);
+  --shadow-glow-blue: 0 0 30px rgba(59,76,202,0.4);
   --shadow-glow-green: 0 0 30px rgba(0,200,83,0.4);
   --shadow-glow-gold: 0 0 30px rgba(255,215,0,0.4);
   --shadow-glow-purple: 0 0 30px rgba(108,79,209,0.4);
+  --shadow-glow-fire: 0 0 30px rgba(255,107,53,0.4);
 
   /* Transitions */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -54,8 +61,8 @@
   --duration-slow: 400ms;
 
   /* Zone themes (overridden per zone) */
-  --zone-primary: var(--blue);
-  --zone-glow: var(--shadow-glow-blue);
+  --zone-primary: var(--red);
+  --zone-glow: var(--shadow-glow-red);
 }
 
 /* ===== RESET ===== */
@@ -148,12 +155,12 @@ h1, h2, h3, h4 {
 }
 
 .btn-primary {
-  background: var(--blue);
+  background: var(--red);
   color: white;
   box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
-.btn-primary:hover { box-shadow: var(--shadow-glow-blue); }
+.btn-primary:hover { box-shadow: var(--shadow-glow-red); }
 
 .btn-gold {
   background: linear-gradient(135deg, var(--gold), #FFA000);
@@ -187,16 +194,11 @@ h1, h2, h3, h4 {
 .text-center { text-align: center; }
 .w-full { width: 100%; }
 
-/* Speed lines background pattern */
-.speed-lines {
+/* Pokeball pattern background */
+.pokeball-bg {
   background-image:
-    repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 20px,
-      rgba(255,255,255,0.015) 20px,
-      rgba(255,255,255,0.015) 21px
-    );
+    radial-gradient(circle at 20% 30%, rgba(204,41,54,0.06) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(59,76,202,0.06) 0%, transparent 40%);
 }
 
 /* Dotted grid pattern */

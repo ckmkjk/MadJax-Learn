@@ -9,13 +9,13 @@ function shuffle(arr) {
 
 function genRound(isJaxon) {
   if (isJaxon) {
-    const target = Math.floor(Math.random() * 8) + 3; // 3-10
+    const target = Math.floor(Math.random() * 16) + 5; // 5-20 (first grade level)
     const a = Math.floor(Math.random() * (target - 1)) + 1;
     const b = target - a;
-    // Add 2-3 decoys
+    // Add 3 decoys
     const decoys = [];
-    while (decoys.length < 2) {
-      const d = Math.floor(Math.random() * 9) + 1;
+    while (decoys.length < 3) {
+      const d = Math.floor(Math.random() * 15) + 1;
       if (d !== a && d !== b && !decoys.includes(d)) decoys.push(d);
     }
     return { target, correct: [a, b], bubbles: shuffle([a, b, ...decoys]) };

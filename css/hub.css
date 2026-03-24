@@ -161,44 +161,56 @@
   color: var(--text-dim);
 }
 
-/* Zone themes */
-.zone-card--math {
-  background: linear-gradient(135deg, rgba(27,111,244,0.15), rgba(27,111,244,0.03));
-  --zone-primary: var(--blue);
+/* Zone themes — Pokemon-inspired */
+.zone-card--gym {
+  background: linear-gradient(135deg, rgba(204,41,54,0.15), rgba(204,41,54,0.03));
+  --zone-primary: var(--red);
 }
-.zone-card--math .zone-card__icon {
-  background: rgba(27,111,244,0.2);
+.zone-card--gym .zone-card__icon {
+  background: rgba(204,41,54,0.2);
 }
-.zone-card--math:hover {
-  box-shadow: 0 0 25px rgba(27,111,244,0.25);
-  border-color: rgba(27,111,244,0.3);
+.zone-card--gym:hover {
+  box-shadow: 0 0 25px rgba(204,41,54,0.25);
+  border-color: rgba(204,41,54,0.3);
 }
-.zone-card--math .zone-card__icon::after {
-  box-shadow: 0 0 20px rgba(27,111,244,0.3);
+.zone-card--gym .zone-card__icon::after {
+  box-shadow: 0 0 20px rgba(204,41,54,0.3);
 }
 
-.zone-card--reading {
+.zone-card--lab {
   background: linear-gradient(135deg, rgba(0,200,83,0.15), rgba(0,200,83,0.03));
   --zone-primary: var(--green);
 }
-.zone-card--reading .zone-card__icon {
+.zone-card--lab .zone-card__icon {
   background: rgba(0,200,83,0.2);
 }
-.zone-card--reading:hover {
+.zone-card--lab:hover {
   box-shadow: 0 0 25px rgba(0,200,83,0.25);
   border-color: rgba(0,200,83,0.3);
 }
 
-.zone-card--puzzle {
+.zone-card--center {
   background: linear-gradient(135deg, rgba(108,79,209,0.15), rgba(108,79,209,0.03));
   --zone-primary: var(--purple-light);
 }
-.zone-card--puzzle .zone-card__icon {
+.zone-card--center .zone-card__icon {
   background: rgba(108,79,209,0.2);
 }
-.zone-card--puzzle:hover {
+.zone-card--center:hover {
   box-shadow: 0 0 25px rgba(108,79,209,0.25);
   border-color: rgba(108,79,209,0.3);
+}
+
+.zone-card--lava {
+  background: linear-gradient(135deg, rgba(255,107,53,0.15), rgba(255,107,53,0.03));
+  --zone-primary: var(--fire);
+}
+.zone-card--lava .zone-card__icon {
+  background: rgba(255,107,53,0.2);
+}
+.zone-card--lava:hover {
+  box-shadow: 0 0 25px rgba(255,107,53,0.25);
+  border-color: rgba(255,107,53,0.3);
 }
 
 .zone-card--daily {

@@ -34,10 +34,10 @@ function showPlayerSelect() {
   showScreen('player-select', (el) => {
     const profiles = Storage.getProfiles();
     el.innerHTML = `
-      <div class="speed-lines" style="position:absolute;inset:0;pointer-events:none"></div>
+      <div class="pokeball-bg" style="position:absolute;inset:0;pointer-events:none"></div>
       <div class="text-center" style="position:relative;z-index:1">
-        <h1 class="player-select__title">MadJax Learn</h1>
-        <p class="player-select__subtitle">Choose your player</p>
+        <h1 class="player-select__title" id="app-title">MadJax Learn</h1>
+        <p class="player-select__subtitle">Choose your trainer!</p>
       </div>
       <div class="player-cards" style="position:relative;z-index:1">
         ${buildPlayerCard('maddox', profiles.maddox)}
@@ -54,6 +54,23 @@ function showPlayerSelect() {
         showHub();
       });
     });
+
+    // Admin access: tap title 5 times
+    let adminTaps = 0;
+    let adminTimer = null;
+    const title = el.querySelector('#app-title');
+    if (title) {
+      title.addEventListener('click', (e) => {
+        e.stopPropagation();
+        adminTaps++;
+        clearTimeout(adminTimer);
+        adminTimer = setTimeout(() => adminTaps = 0, 2000);
+        if (adminTaps >= 5) {
+          adminTaps = 0;
+          showAdminLogin();
+        }
+      });
+    }
   });
 }
 
@@ -69,7 +86,7 @@ function buildPlayerCard(id, profile) {
           ${profile.totalStars}
         </span>
         <span class="player-card__stat">
-          <span class="player-card__stat-icon">⚡</span>
+          <span class="player-card__stat-icon">🎮</span>
           Lv ${profile.level}
         </span>
       </div>
@@ -81,40 +98,47 @@ function buildPlayerCard(id, profile) {
   `;
 }
 
-// ===== GAME HUB =====
+// ===== GAME HUB — Pokemon Theme =====
 const ZONES = [
   {
-    id: 'math', name: 'Speed Zone', desc: 'Math challenges — be fast, be accurate',
-    theme: 'zone-card--math', icon: '⚡',
+    id: 'gym', name: 'Pallet Town Gym', desc: 'Math battles — train your brain!',
+    theme: 'zone-card--gym', icon: '🏟️',
     games: [
-      { id: 'ring-rush', name: 'Ring Rush', icon: '💍', module: './games/ring-rush.js' },
-      { id: 'number-blaster', name: 'Number Blaster', icon: '💥', module: './games/number-blaster.js' },
+      { id: 'ring-rush', name: 'Quick Attack', icon: '⚡', module: './games/ring-rush.js' },
+      { id: 'number-blaster', name: 'Math Battle', icon: '💥', module: './games/number-blaster.js' },
       { id: 'speed-duel', name: 'Speed Duel', icon: '⚔️', module: './games/speed-duel.js' },
     ]
   },
   {
-    id: 'reading', name: 'Word Jungle', desc: 'Reading & spelling adventures',
-    theme: 'zone-card--reading', icon: '🌿',
+    id: 'lab', name: "Professor Oak's Lab", desc: 'Reading & spelling research',
+    theme: 'zone-card--lab', icon: '🔬',
     games: [
-      { id: 'word-builder', name: 'Word Builder', icon: '🔤', module: './games/word-builder.js' },
-      { id: 'story-sprint', name: 'Story Sprint', icon: '📖', module: './games/story-sprint.js' },
-      { id: 'letter-splash', name: 'Letter Splash', icon: '💧', module: './games/letter-splash.js' },
+      { id: 'word-builder', name: 'Word Evolution', icon: '🔤', module: './games/word-builder.js' },
+      { id: 'story-sprint', name: 'Pokedex Stories', icon: '📖', module: './games/story-sprint.js' },
+      { id: 'letter-splash', name: 'Letter Catch', icon: '🅰️', module: './games/letter-splash.js' },
     ]
   },
   {
-    id: 'puzzle', name: 'Puzzle Dimension', desc: 'Logic, memory & pattern challenges',
-    theme: 'zone-card--puzzle', icon: '🔮',
+    id: 'center', name: 'Pokemon Center', desc: 'Logic, memory & pattern training',
+    theme: 'zone-card--center', icon: '🏥',
     games: [
       { id: 'pattern-portal', name: 'Pattern Portal', icon: '🌀', module: './games/pattern-portal.js' },
-      { id: 'memory-matrix', name: 'Memory Matrix', icon: '🃏', module: './games/memory-matrix.js' },
-      { id: 'maze-runner', name: 'Maze Runner', icon: '🏃', module: './games/maze-runner.js' },
+      { id: 'memory-matrix', name: 'Memory Match', icon: '🃏', module: './games/memory-matrix.js' },
+      { id: 'maze-runner', name: 'Cave Explorer', icon: '🗺️', module: './games/maze-runner.js' },
     ]
   },
   {
-    id: 'daily', name: 'Daily Ring Run', desc: 'Mixed daily challenge — earn your ring!',
-    theme: 'zone-card--daily', icon: '💍',
+    id: 'lava', name: 'Lava Badge Arena', desc: 'Dodge lava, answer questions, earn badges!',
+    theme: 'zone-card--lava', icon: '🌋',
     games: [
-      { id: 'ring-run', name: 'Ring Run', icon: '🏆', module: './games/ring-run.js' },
+      { id: 'floor-is-lava', name: 'Floor is Lava', icon: '🔥', module: './games/floor-is-lava.js' },
+    ]
+  },
+  {
+    id: 'daily', name: 'Daily Pokemon Challenge', desc: 'Mixed daily challenge — catch them all!',
+    theme: 'zone-card--daily', icon: '🏆',
+    games: [
+      { id: 'ring-run', name: 'Pokemon Run', icon: '🏃', module: './games/ring-run.js' },
     ]
   }
 ];
@@ -135,7 +159,7 @@ function showHub() {
         </div>
         <div class="hub__player-stats">
           <div class="hub__stat">${starSVG(16, true)} <span class="hub__stat-value">${profile.totalStars}</span></div>
-          <div class="hub__stat">⚡ <span class="hub__stat-value">${profile.xp}</span></div>
+          <div class="hub__stat">🎮 <span class="hub__stat-value">${profile.xp} XP</span></div>
         </div>
       </div>
       <div class="hub__zones dot-grid">
@@ -246,6 +270,16 @@ async function launchGame(gameId, modulePath) {
   } catch (err) {
     console.error('Failed to load game:', err);
     showHub();
+  }
+}
+
+// ===== ADMIN DASHBOARD =====
+async function showAdminLogin() {
+  try {
+    const adminModule = await import('./admin.js');
+    adminModule.showLogin(app, showScreen, showPlayerSelect, Storage, Audio, ZONES, starSVG);
+  } catch (err) {
+    console.error('Failed to load admin module:', err);
   }
 }
 

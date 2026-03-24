@@ -2,6 +2,13 @@
 
 ## Resolved
 
+### Session 3: 2026-03-24 — Pokemon Theme + New Features
+
+| # | File | Issue | Fix |
+|---|------|-------|-----|
+| 10 | `js/games/pattern-portal.js` | Display logic used `seq.slice(0, -1)` which hid last item — but PATTERNS_HARD had `answer !== seq[-1]` causing wrong sequences for Maddox | Changed to show full `seq` with "?" appended after. Answer now correctly represents "what comes next" |
+| 11 | `data/patterns.js` | 8 of 13 hard patterns had mismatched answer vs last sequence item | Fixed by aligning display approach — show full seq, answer = next item |
+
 ### Session: 2026-03-24 — Full Audit
 
 | # | File | Issue | Fix |
@@ -21,13 +28,13 @@
 | # | File | Issue | Severity | Notes |
 |---|------|-------|----------|-------|
 | 1 | `js/audio.js:10` | `AudioContext.resume()` not awaited — audio may not play on first interaction in some browsers | Medium | Affects iOS Safari and strict autoplay browsers |
-| 2 | `js/avatars.js:122,130,143` | Mini avatars and star SVGs missing `xmlns` attribute | Low | Browsers handle gracefully, only matters for strict XML parsers |
 
-## Notes (Session 2: Firebase + PWA)
-- No new bugs found during implementation
-- Firebase sync uses fire-and-forget writes — SDK handles offline queuing automatically
-- `_handleRemoteUpdate` in storage.js writes directly to localStorage (bypasses `saveData`) to avoid echo loops
-- Service worker caches Firebase CDN separately from app shell (`FIREBASE_CDN_CACHE`)
+## Notes (Session 3: Pokemon Theme + Features)
+- Pattern Portal bug was a data/display mismatch — patterns were designed for "what comes next" but code showed "fill in the blank"
+- Floor is Lava uses injected `<style>` element for game-specific CSS — cleaned up in `cleanup()`
+- Admin dashboard uses dynamic `import()` to lazy-load admin.js only when needed
+- Level progression stored in `gameLevels` map in player profile — auto-unlocks on 2+ stars
+- All SVGs now include `xmlns` attribute for strict compliance
 
 ## Error Patterns to Watch
 
@@ -36,3 +43,4 @@
 - **Null profiles**: `Storage.getCurrentProfile()` can return null — always guard return values
 - **Array bounds**: When using level/index lookups, verify the array has entries at the target index
 - **Double-tap**: Disable interactive elements immediately after a decisive action (submit, answer)
+- **Style injection**: Games that inject `<style>` elements must remove them in `cleanup()`
