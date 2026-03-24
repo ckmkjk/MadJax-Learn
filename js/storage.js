@@ -120,7 +120,7 @@ export const Storage = {
     if (!p) return;
     p.xp += amount;
     // Check level up
-    while (p.level < 50 && p.xp >= LEVEL_XP[p.level + 1]) {
+    while (p.level < 50 && LEVEL_XP[p.level + 1] !== undefined && p.xp >= LEVEL_XP[p.level + 1]) {
       p.level += 1;
     }
     saveData(_data);
@@ -129,7 +129,7 @@ export const Storage = {
 
   recordGameResult(gameId, score, maxScore) {
     const p = this.getCurrentProfile();
-    if (!p) return {};
+    if (!p) return { stars: 0, isRecord: false, xpGained: 0, newLevel: 1 };
 
     // Track games played
     p.gamesPlayed[gameId] = (p.gamesPlayed[gameId] || 0) + 1;
@@ -213,6 +213,7 @@ export const Storage = {
     if (!p) return 0;
     const current = LEVEL_XP[p.level] || 0;
     const next = LEVEL_XP[p.level + 1] || current + 1000;
-    return (p.xp - current) / (next - current);
+    const range = next - current;
+    return range > 0 ? (p.xp - current) / range : 1;
   }
 };
