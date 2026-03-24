@@ -7,41 +7,43 @@ const DEFAULT_PROFILES = {
   maddox: {
     id: 'maddox',
     name: 'Maddox',
-    age: 7,
-    grade: '2nd',
-    theme: 'speed',       // lightning/speed
-    color: '#1B6FF4',
+    age: 8,
+    grade: '3rd',
+    theme: 'fire',        // fire/champion trainer
+    color: '#CC2936',
     xp: 0,
     level: 1,
     totalStars: 0,
     streak: 0,
     lastPlayedDate: null,
     dailyRings: [],       // array of date strings
-    avatar: { trail: 'lightning', hat: null, color: '#1B6FF4' },
+    avatar: { trail: 'fire', hat: 'red', color: '#CC2936' },
     unlocks: [],
     bestScores: {},       // { gameId: score }
     gamesPlayed: {},      // { gameId: count }
     starsPerGame: {},     // { gameId: stars (0-3) }
+    gameLevels: {},       // { gameId: highest unlocked level (1-3) }
     lastModified: 0,
   },
   jaxon: {
     id: 'jaxon',
     name: 'Jaxon',
     age: 5,
-    grade: 'K',
-    theme: 'water',       // water/stealth
-    color: '#00BCD4',
+    grade: '1st',
+    theme: 'water',       // water/starter trainer
+    color: '#3B4CCA',
     xp: 0,
     level: 1,
     totalStars: 0,
     streak: 0,
     lastPlayedDate: null,
     dailyRings: [],
-    avatar: { trail: 'water', hat: null, color: '#00BCD4' },
+    avatar: { trail: 'water', hat: 'blue', color: '#3B4CCA' },
     unlocks: [],
     bestScores: {},
     gamesPlayed: {},
     starsPerGame: {},
+    gameLevels: {},       // { gameId: highest unlocked level (1-3) }
     lastModified: 0,
   }
 };
@@ -187,9 +189,22 @@ export const Storage = {
     const xpGained = score * 10 + (isRecord ? 25 : 0) + (stars === 3 ? 15 : 0);
     this.addXP(xpGained);
 
+    // Level progression: unlock next level if 2+ stars
+    let leveledUp = false;
+    if (stars >= 2) {
+      const currentGameLevel = p.gameLevels?.[gameId] || 1;
+      if (currentGameLevel < 3) {
+        if (!p.gameLevels) p.gameLevels = {};
+        if (!p.gameLevels[gameId] || p.gameLevels[gameId] < currentGameLevel + 1) {
+          p.gameLevels[gameId] = currentGameLevel + 1;
+          leveledUp = true;
+        }
+      }
+    }
+
     _batchMode = false;
     saveData(_data);
-    return { stars, isRecord, xpGained, newLevel: p.level };
+    return { stars, isRecord, xpGained, newLevel: p.level, leveledUp };
   },
 
   collectDailyRing() {
@@ -250,5 +265,65 @@ export const Storage = {
     const next = LEVEL_XP[p.level + 1] || current + 1000;
     const range = next - current;
     return range > 0 ? (p.xp - current) / range : 1;
+  },
+
+  // ===== LEVEL PROGRESSION =====
+  getGameLevel(gameId) {
+    const p = this.getCurrentProfile();
+    if (!p) return 1;
+    return p.gameLevels?.[gameId] || 1;
+  },
+
+  unlockNextLevel(gameId) {
+    const p = this.getCurrentProfile();
+    if (!p) return;
+    const current = p.gameLevels?.[gameId] || 1;
+    if (current < 3) {
+      if (!p.gameLevels) p.gameLevels = {};
+      p.gameLevels[gameId] = current + 1;
+      saveData(_data);
+    }
+  },
+
+  // ===== ADMIN METHODS =====
+  getPin() {
+    try {
+      return localStorage.getItem('madjax-admin-pin') || '1234';
+    } catch { return '1234'; }
+  },
+
+  setPin(pin) {
+    try {
+      localStorage.setItem('madjax-admin-pin', pin);
+    } catch (e) {
+      console.warn('Failed to save PIN:', e);
+    }
+  },
+
+  checkPin(pin) {
+    return pin === this.getPin();
+  },
+
+  resetGameProgress(playerId, gameId) {
+    const p = _data.profiles[playerId];
+    if (!p) return;
+    const oldStars = p.starsPerGame[gameId] || 0;
+    p.totalStars = Math.max(0, p.totalStars - oldStars);
+    delete p.bestScores[gameId];
+    delete p.gamesPlayed[gameId];
+    delete p.starsPerGame[gameId];
+    if (p.gameLevels) delete p.gameLevels[gameId];
+    saveData(_data);
+  },
+
+  resetPlayerProgress(playerId) {
+    const name = _data.profiles[playerId]?.name;
+    _data.profiles[playerId] = { ...JSON.parse(JSON.stringify(DEFAULT_PROFILES[playerId])) };
+    if (name) _data.profiles[playerId].name = name;
+    saveData(_data);
+  },
+
+  getAllData() {
+    return _data;
   }
 };

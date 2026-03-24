@@ -43,6 +43,17 @@ export const LETTER_SOUNDS = [
   { letter: 'T', sound: 'tuh' }, { letter: 'W', sound: 'wuh' },
 ];
 
+// CVCC / 4-letter words for Jaxon (first grade level)
+export const FIRST_GRADE_WORDS = [
+  { word: 'fish', hint: '🐟' }, { word: 'frog', hint: '🐸' }, { word: 'bird', hint: '🐦' },
+  { word: 'star', hint: '⭐' }, { word: 'tree', hint: '🌲' }, { word: 'duck', hint: '🦆' },
+  { word: 'ball', hint: '⚽' }, { word: 'cake', hint: '🎂' }, { word: 'moon', hint: '🌙' },
+  { word: 'rain', hint: '🌧️' }, { word: 'snow', hint: '❄️' }, { word: 'boat', hint: '⛵' },
+  { word: 'book', hint: '📕' }, { word: 'hand', hint: '✋' }, { word: 'lamp', hint: '💡' },
+  { word: 'kite', hint: '🪁' }, { word: 'milk', hint: '🥛' }, { word: 'nest', hint: '🪹' },
+  { word: 'ring', hint: '💍' }, { word: 'sock', hint: '🧦' },
+];
+
 // Words for Maddox's Letter Splash variant (beginning/ending sounds)
 export const PHONICS_WORDS = [
   'snake', 'train', 'green', 'brown', 'black', 'seven', 'three', 'grape',

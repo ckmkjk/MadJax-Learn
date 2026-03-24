@@ -1,5 +1,5 @@
 // ===== SERVICE WORKER — OFFLINE CACHING =====
-const CACHE_NAME = 'madjax-v1';
+const CACHE_NAME = 'madjax-v2';
 const APP_SHELL = [
   '/MadJax-Learn/',
   '/MadJax-Learn/index.html',
@@ -7,15 +7,18 @@ const APP_SHELL = [
   '/MadJax-Learn/css/player-select.css',
   '/MadJax-Learn/css/hub.css',
   '/MadJax-Learn/css/games.css',
+  '/MadJax-Learn/css/admin.css',
   '/MadJax-Learn/js/app.js',
   '/MadJax-Learn/js/storage.js',
   '/MadJax-Learn/js/audio.js',
   '/MadJax-Learn/js/avatars.js',
+  '/MadJax-Learn/js/admin.js',
   '/MadJax-Learn/js/firebase-config.js',
   '/MadJax-Learn/js/firebase-sync.js',
   '/MadJax-Learn/data/words.js',
   '/MadJax-Learn/data/stories.js',
   '/MadJax-Learn/data/patterns.js',
+  '/MadJax-Learn/data/lava-questions.js',
   '/MadJax-Learn/js/games/ring-rush.js',
   '/MadJax-Learn/js/games/number-blaster.js',
   '/MadJax-Learn/js/games/speed-duel.js',
@@ -26,6 +29,7 @@ const APP_SHELL = [
   '/MadJax-Learn/js/games/memory-matrix.js',
   '/MadJax-Learn/js/games/maze-runner.js',
   '/MadJax-Learn/js/games/ring-run.js',
+  '/MadJax-Learn/js/games/floor-is-lava.js',
 ];
 
 const FIREBASE_CDN_CACHE = 'madjax-firebase-v1';

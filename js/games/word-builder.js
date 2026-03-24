@@ -1,6 +1,6 @@
 // ===== WORD BUILDER — Drag/tap letters to spell words =====
 import { Audio } from '../audio.js';
-import { CVC_WORDS, SPELLING_WORDS } from '../../data/words.js';
+import { CVC_WORDS, FIRST_GRADE_WORDS, SPELLING_WORDS } from '../../data/words.js';
 
 function shuffle(arr) {
   const a = [...arr];
@@ -9,7 +9,11 @@ function shuffle(arr) {
 }
 
 function getWordList(isJaxon) {
-  if (isJaxon) return shuffle([...CVC_WORDS]).slice(0, 8);
+  if (isJaxon) {
+    // Mix CVC and first-grade 4-letter words
+    const mixed = shuffle([...CVC_WORDS, ...FIRST_GRADE_WORDS]);
+    return mixed.slice(0, 8);
+  }
   return shuffle([...SPELLING_WORDS]).slice(0, 8);
 }
 
@@ -35,8 +39,11 @@ export function init(container, ctx) {
 
     // Generate letters: word letters + decoys (Maddox only)
     let letters = word.split('');
-    if (!isJaxon) {
-      const decoys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(l => !letters.includes(l));
+    const decoys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(l => !letters.includes(l));
+    if (isJaxon) {
+      // First grade: add 1 decoy letter for mild challenge
+      letters = [...letters, ...shuffle(decoys).slice(0, 1)];
+    } else {
       letters = [...letters, ...shuffle(decoys).slice(0, 2)];
     }
     letters = shuffle(letters);

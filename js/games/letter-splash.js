@@ -1,6 +1,6 @@
 // ===== LETTER SPLASH — Letters rain down, tap the correct one =====
 import { Audio } from '../audio.js';
-import { LETTER_SOUNDS, PHONICS_WORDS } from '../../data/words.js';
+import { LETTER_SOUNDS, PHONICS_WORDS, CVC_WORDS } from '../../data/words.js';
 
 function shuffle(arr) {
   const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a;
@@ -27,13 +27,26 @@ export function init(container, ctx) {
 
   function genChallenge() {
     if (isJaxon) {
-      const target = LETTER_SOUNDS[Math.floor(Math.random() * LETTER_SOUNDS.length)];
-      const others = shuffle(LETTER_SOUNDS.filter(l => l.letter !== target.letter)).slice(0, 2);
+      // Mix: 50% letter sounds, 50% CVC word starting letter (first grade)
+      if (Math.random() < 0.5) {
+        const target = LETTER_SOUNDS[Math.floor(Math.random() * LETTER_SOUNDS.length)];
+        const others = shuffle(LETTER_SOUNDS.filter(l => l.letter !== target.letter)).slice(0, 3);
+        return {
+          prompt: `What makes the "${target.sound}" sound?`,
+          speak: target.sound,
+          answer: target.letter,
+          choices: shuffle([target.letter, ...others.map(o => o.letter)]),
+        };
+      }
+      // CVC word mode: what letter does this word start with?
+      const w = CVC_WORDS[Math.floor(Math.random() * CVC_WORDS.length)];
+      const answer = w.word[0].toUpperCase();
+      const others = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(l => l !== answer);
       return {
-        prompt: `"${target.sound}"`,
-        speak: target.sound,
-        answer: target.letter,
-        choices: shuffle([target.letter, ...others.map(o => o.letter)]),
+        prompt: `${w.hint} "${w.word.toUpperCase()}" starts with?`,
+        speak: w.word,
+        answer,
+        choices: shuffle([answer, ...shuffle(others).slice(0, 3)]),
       };
     }
     // Maddox: tap the letter the word starts/ends with

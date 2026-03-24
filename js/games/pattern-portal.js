@@ -23,8 +23,8 @@ export function init(container, ctx) {
     const p = patterns[idx];
     const sizeClass = isJaxon ? 'jaxon-size' : '';
 
-    // Show sequence with last item as "?"
-    const display = [...p.seq.slice(0, -1)];
+    // Show full sequence, then "?" for what comes next
+    const display = [...p.seq];
 
     gameArea.innerHTML = `
       <div class="game-hud">
