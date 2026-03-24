@@ -1,0 +1,742 @@
+/* ===== SHARED GAME UI ===== */
+.game-screen {
+  padding: 0;
+}
+
+/* Game header bar */
+.game-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgba(0,0,0,0.4);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.game-hud__left, .game-hud__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.game-hud__score {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--gold);
+}
+
+.game-hud__timer {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text);
+  min-width: 48px;
+  text-align: center;
+}
+
+.game-hud__timer.warning {
+  color: var(--coral);
+  animation: pulse-glow 0.5s ease-in-out infinite;
+}
+
+.game-hud__streak {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all var(--duration-normal) var(--ease-bounce);
+}
+
+.game-hud__streak.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.game-hud__streak.super {
+  color: var(--coral);
+  font-size: 1rem;
+  text-shadow: 0 0 10px rgba(255,71,87,0.5);
+}
+
+/* Game area */
+.game-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Answer buttons */
+.answer-grid {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.answer-grid--cols-2 { grid-template-columns: 1fr 1fr; }
+.answer-grid--cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.answer-grid--cols-4 { grid-template-columns: 1fr 1fr; }
+
+.answer-btn {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.3rem;
+  padding: 18px 16px;
+  border-radius: var(--radius);
+  border: 2px solid rgba(255,255,255,0.1);
+  background: var(--bg-card);
+  color: var(--text-bright);
+  cursor: pointer;
+  min-height: 64px;
+  transition: transform var(--duration-fast) var(--ease-bounce),
+              background var(--duration-fast),
+              border-color var(--duration-fast),
+              box-shadow var(--duration-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.answer-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.answer-btn:active {
+  transform: scale(0.95);
+}
+
+.answer-btn.correct {
+  background: rgba(0,200,83,0.3);
+  border-color: var(--green);
+  box-shadow: 0 0 20px rgba(0,200,83,0.3);
+  animation: pop-in 0.3s var(--ease-bounce);
+}
+
+.answer-btn.wrong {
+  background: rgba(255,71,87,0.2);
+  border-color: var(--coral);
+  animation: shake 0.4s;
+}
+
+.answer-btn:disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Jaxon mode — bigger targets */
+.answer-btn.jaxon-size {
+  font-size: 1.8rem;
+  padding: 24px;
+  min-height: 80px;
+}
+
+/* Question display */
+.question-display {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 8vw, 4rem);
+  font-weight: 900;
+  color: var(--text-bright);
+  text-align: center;
+  margin-bottom: 32px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Game over / results screen */
+.game-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 24px;
+  text-align: center;
+  animation: slide-up 0.4s var(--ease-out);
+}
+
+.game-results__score {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.game-results__label {
+  font-size: 1rem;
+  color: var(--text-dim);
+}
+
+.game-results__record {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--coral);
+  padding: 8px 20px;
+  background: rgba(255,71,87,0.15);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,71,87,0.3);
+  animation: pop-in 0.5s var(--ease-bounce);
+}
+
+.game-results__stars {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.game-results__star {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s var(--ease-bounce);
+}
+
+.game-results__star.earned {
+  animation: pop-in 0.5s var(--ease-bounce);
+}
+
+.game-results__xp {
+  font-size: 0.9rem;
+  color: var(--blue-light);
+  font-weight: 700;
+}
+
+.game-results__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* Countdown overlay */
+.countdown-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13,11,26,0.85);
+  z-index: 20;
+}
+
+.countdown-number {
+  font-family: var(--font-heading);
+  font-size: 8rem;
+  font-weight: 900;
+  color: var(--gold);
+  animation: pop-in 0.5s var(--ease-bounce);
+}
+
+/* Super Speed mode effect */
+.super-speed-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s;
+  background:
+    repeating-linear-gradient(
+      -80deg,
+      transparent,
+      transparent 30px,
+      rgba(255,215,0,0.03) 30px,
+      rgba(255,215,0,0.03) 31px
+    );
+}
+
+.super-speed-bg.active {
+  opacity: 1;
+  animation: streak-flash 1s linear infinite;
+  background-size: 200% 100%;
+}
+
+/* Split screen for duel mode */
+.duel-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.duel-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+}
+
+.duel-side--left {
+  background: linear-gradient(135deg, rgba(27,111,244,0.08), transparent);
+  border-right: 2px solid rgba(255,255,255,0.05);
+}
+
+.duel-side--right {
+  background: linear-gradient(135deg, transparent, rgba(0,188,212,0.08));
+}
+
+.duel-side__player {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.duel-side__score {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 2.5rem;
+  color: var(--gold);
+}
+
+.duel-question {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0,0,0,0.3);
+}
+
+.duel-question__text {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 6vw, 3rem);
+  font-weight: 900;
+}
+
+/* Falling items (Ring Rush) */
+.falling-zone {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.falling-item {
+  position: absolute;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.4rem;
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 2px solid rgba(255,255,255,0.15);
+  color: var(--text-bright);
+  cursor: pointer;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s, opacity 0.2s;
+  z-index: 2;
+}
+
+.falling-item:active {
+  transform: scale(0.9);
+}
+
+.falling-item.correct-flash {
+  background: rgba(0,200,83,0.4);
+  border-color: var(--green);
+}
+
+.falling-item.wrong-flash {
+  background: rgba(255,71,87,0.3);
+  border-color: var(--coral);
+}
+
+.falling-item.jaxon-size {
+  font-size: 2rem;
+  padding: 16px 28px;
+  min-width: 70px;
+  min-height: 70px;
+}
+
+/* Number Blaster bubbles */
+.bubble-field {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.number-bubble {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--text-bright);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-bounce),
+              box-shadow var(--duration-fast);
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.number-bubble:active {
+  transform: scale(0.9);
+}
+
+.number-bubble.selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(255,215,0,0.4);
+  transform: scale(1.1);
+}
+
+.number-bubble.popped {
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.3s var(--ease-out);
+}
+
+.number-bubble.jaxon-size {
+  width: 90px;
+  height: 90px;
+  font-size: 1.8rem;
+}
+
+/* Word Builder letter tiles */
+.letter-slots {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+.letter-slot {
+  width: 56px;
+  height: 64px;
+  border-radius: 12px;
+  border: 2px dashed rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--text-bright);
+  transition: border-color var(--duration-fast), background var(--duration-fast);
+}
+
+.letter-slot.filled {
+  border-style: solid;
+  border-color: var(--zone-primary);
+  background: rgba(255,255,255,0.06);
+}
+
+.letter-slot.correct {
+  border-color: var(--green);
+  background: rgba(0,200,83,0.15);
+}
+
+.letter-slot.jaxon-size {
+  width: 72px;
+  height: 80px;
+  font-size: 2.2rem;
+}
+
+.letter-tray {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.letter-tile {
+  width: 56px;
+  height: 64px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 2px solid rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--text-bright);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-bounce),
+              box-shadow var(--duration-fast);
+}
+
+.letter-tile:active { transform: scale(0.9); }
+.letter-tile:hover { box-shadow: var(--shadow-sm); }
+
+.letter-tile.used {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.letter-tile.jaxon-size {
+  width: 72px;
+  height: 80px;
+  font-size: 2.2rem;
+}
+
+/* Memory Matrix cards */
+.memory-grid {
+  display: grid;
+  gap: 10px;
+  justify-content: center;
+}
+
+.memory-card {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  cursor: pointer;
+  perspective: 600px;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+}
+
+.memory-card__inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.5s var(--ease-out);
+  transform-style: preserve-3d;
+}
+
+.memory-card.flipped .memory-card__inner {
+  transform: rotateY(180deg);
+}
+
+.memory-card__face {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  font-family: var(--font-heading);
+  font-weight: 800;
+}
+
+.memory-card__front {
+  background: linear-gradient(135deg, rgba(108,79,209,0.3), rgba(108,79,209,0.1));
+  border: 2px solid rgba(108,79,209,0.3);
+  font-size: 1.5rem;
+  color: rgba(255,255,255,0.15);
+}
+
+.memory-card__back {
+  transform: rotateY(180deg);
+  background: var(--bg-card);
+  border: 2px solid rgba(255,255,255,0.15);
+  font-size: 1.2rem;
+  color: var(--text-bright);
+  padding: 4px;
+  text-align: center;
+  word-break: break-word;
+}
+
+.memory-card.matched .memory-card__back {
+  background: rgba(0,200,83,0.15);
+  border-color: var(--green);
+}
+
+/* Maze */
+.maze-container {
+  display: grid;
+  gap: 2px;
+  margin: 0 auto;
+}
+
+.maze-cell {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: background var(--duration-fast);
+}
+
+.maze-cell--wall {
+  background: rgba(45,27,105,0.5);
+}
+
+.maze-cell--path {
+  background: rgba(255,255,255,0.03);
+}
+
+.maze-cell--player {
+  background: var(--blue);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(27,111,244,0.5);
+}
+
+.maze-cell--gate {
+  background: rgba(255,215,0,0.2);
+  border: 1px solid rgba(255,215,0,0.4);
+}
+
+.maze-cell--finish {
+  background: rgba(0,200,83,0.2);
+  border: 1px solid rgba(0,200,83,0.4);
+}
+
+.maze-cell--trail {
+  background: rgba(0,188,212,0.15);
+}
+
+/* Pattern Portal choices */
+.pattern-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pattern-item {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.pattern-item.missing {
+  border-style: dashed;
+  border-color: var(--purple-light);
+  background: rgba(108,79,209,0.1);
+  font-size: 1.2rem;
+  color: var(--purple-light);
+}
+
+.pattern-item.jaxon-size {
+  width: 72px;
+  height: 72px;
+  font-size: 2rem;
+}
+
+/* Letter Splash rain drops */
+.rain-drop {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 1.6rem;
+  color: var(--text-bright);
+  cursor: pointer;
+  background: linear-gradient(180deg, rgba(0,188,212,0.4), rgba(0,188,212,0.15));
+  border: 2px solid rgba(0,188,212,0.4);
+  z-index: 2;
+}
+
+.rain-drop:active {
+  transform: scale(0.9);
+}
+
+.rain-drop.jaxon-size {
+  width: 80px;
+  height: 80px;
+  font-size: 2.2rem;
+}
+
+.rain-drop.splash {
+  animation: splash-out 0.4s var(--ease-out) forwards;
+}
+
+@keyframes splash-out {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; border-radius: 50%; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* Story Sprint */
+.story-box {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  max-width: 560px;
+  width: 100%;
+  margin-bottom: 24px;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.story-box.jaxon-size {
+  font-size: 1.3rem;
+  line-height: 1.8;
+}
+
+/* Daily Ring display */
+.ring-chain {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.ring-chain__ring {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,215,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--duration-normal) var(--ease-bounce);
+}
+
+.ring-chain__ring.collected {
+  border-color: var(--gold);
+  background: rgba(255,215,0,0.15);
+  box-shadow: 0 0 12px rgba(255,215,0,0.3);
+}
+
+/* Modal gate (for maze questions) */
+.gate-modal {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13,11,26,0.9);
+  z-index: 15;
+  padding: 24px;
+}
+
+.gate-modal__content {
+  background: rgba(45,27,105,0.6);
+  border: 1px solid rgba(108,79,209,0.3);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}

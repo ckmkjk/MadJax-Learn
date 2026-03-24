@@ -1,6 +1,6 @@
-node_modules
-dist
-data/profiles.json
 .DS_Store
 *.log
-skills/ui-ux-pro-max/scripts/__pycache__/
+__pycache__/
+*.pyc
+node_modules/
+dist/
