@@ -1,4 +1,6 @@
 // ===== PLAYER STORAGE & PROFILES =====
+import { FirebaseSync } from './firebase-sync.js';
+
 const STORAGE_KEY = 'madjax-learn';
 
 const DEFAULT_PROFILES = {
@@ -20,6 +22,7 @@ const DEFAULT_PROFILES = {
     bestScores: {},       // { gameId: score }
     gamesPlayed: {},      // { gameId: count }
     starsPerGame: {},     // { gameId: stars (0-3) }
+    lastModified: 0,
   },
   jaxon: {
     id: 'jaxon',
@@ -39,6 +42,7 @@ const DEFAULT_PROFILES = {
     bestScores: {},
     gamesPlayed: {},
     starsPerGame: {},
+    lastModified: 0,
   }
 };
 
@@ -70,17 +74,45 @@ function loadData() {
   return { profiles: JSON.parse(JSON.stringify(DEFAULT_PROFILES)), currentPlayer: null };
 }
 
+let _batchMode = false;
+
 function saveData(data) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch (e) {
     console.warn('Storage save failed:', e);
   }
+  if (!_batchMode && data.currentPlayer) {
+    const profile = data.profiles[data.currentPlayer];
+    profile.lastModified = Date.now();
+    FirebaseSync.pushProfile(data.currentPlayer, profile);
+  }
+}
+
+function _handleRemoteUpdate(playerId, remoteProfile) {
+  if (!remoteProfile) return;
+  const local = _data.profiles[playerId];
+  if (remoteProfile.lastModified > (local.lastModified || 0)) {
+    _data.profiles[playerId] = { ...DEFAULT_PROFILES[playerId], ...remoteProfile };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(_data));
+    } catch (e) {
+      console.warn('Storage save failed:', e);
+    }
+  }
 }
 
 let _data = loadData();
 
 export const Storage = {
+  async init() {
+    try {
+      await FirebaseSync.init(_handleRemoteUpdate);
+    } catch (e) {
+      console.warn('Firebase init failed, using offline mode:', e);
+    }
+  },
+
   getProfiles() {
     return _data.profiles;
   },
@@ -131,6 +163,8 @@ export const Storage = {
     const p = this.getCurrentProfile();
     if (!p) return { stars: 0, isRecord: false, xpGained: 0, newLevel: 1 };
 
+    _batchMode = true;
+
     // Track games played
     p.gamesPlayed[gameId] = (p.gamesPlayed[gameId] || 0) + 1;
 
@@ -153,6 +187,7 @@ export const Storage = {
     const xpGained = score * 10 + (isRecord ? 25 : 0) + (stars === 3 ? 15 : 0);
     this.addXP(xpGained);
 
+    _batchMode = false;
     saveData(_data);
     return { stars, isRecord, xpGained, newLevel: p.level };
   },

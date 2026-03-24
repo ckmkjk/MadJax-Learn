@@ -258,4 +258,4 @@ document.addEventListener('touchend', (e) => {
 }, { passive: false });
 
 // ===== INIT =====
-showPlayerSelect();
+Storage.init().then(() => showPlayerSelect());

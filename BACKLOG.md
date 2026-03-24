@@ -5,7 +5,8 @@
 ### High Priority
 - [ ] Await `AudioContext.resume()` in audio.js for reliable first-interaction audio
 - [ ] Add sound on/off toggle and volume control in hub
-- [ ] PWA support (manifest.json, service worker) for offline play
+- [x] PWA support (manifest.json, service worker) for offline play
+- [x] Firebase Realtime Database sync for cross-device progress
 - [ ] Add `xmlns` attribute to mini avatar and star SVGs for strict compliance
 
 ### Medium Priority
@@ -24,9 +25,16 @@
 - [ ] Accessibility audit (screen reader support, keyboard nav, ARIA labels)
 
 ## In Progress
-- (none)
+- [ ] Firebase security rules (lock down to `/profiles/maddox` and `/profiles/jaxon` only)
+- [ ] GitHub Pages deployment
 
 ## Completed
+
+### 2026-03-24 (Session 2)
+- [x] Firebase Realtime Database cloud sync (firebase-config.js, firebase-sync.js, storage.js changes)
+- [x] PWA manifest, service worker, iOS meta tags, PWA icons
+- [x] Offline-first with last-write-wins conflict resolution
+- [x] Batch mode in recordGameResult to avoid double Firebase writes
 
 ### 2026-03-24
 - [x] Complete app rebuild as pure HTML/CSS/JS

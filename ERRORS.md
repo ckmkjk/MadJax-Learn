@@ -23,6 +23,12 @@
 | 1 | `js/audio.js:10` | `AudioContext.resume()` not awaited — audio may not play on first interaction in some browsers | Medium | Affects iOS Safari and strict autoplay browsers |
 | 2 | `js/avatars.js:122,130,143` | Mini avatars and star SVGs missing `xmlns` attribute | Low | Browsers handle gracefully, only matters for strict XML parsers |
 
+## Notes (Session 2: Firebase + PWA)
+- No new bugs found during implementation
+- Firebase sync uses fire-and-forget writes — SDK handles offline queuing automatically
+- `_handleRemoteUpdate` in storage.js writes directly to localStorage (bypasses `saveData`) to avoid echo loops
+- Service worker caches Firebase CDN separately from app shell (`FIREBASE_CDN_CACHE`)
+
 ## Error Patterns to Watch
 
 - **Timer leaks**: Always store interval/timeout IDs and clear them in the game's `cleanup()` function
